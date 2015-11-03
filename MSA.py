@@ -71,7 +71,25 @@ def globalAlignmentScore(s1, s2):
 # A previous lab exercise may be helpful
 #################################################################
 def generateRandomSequence(length, A_prob, C_prob, G_prob, T_prob):
-    return ""	# delete this stub
+    a_Lim = A_prob
+    c_Lim = a_Lim + C_prob
+    g_Lim = c_Lim + G_prob
+    t_Lim = g_Lim + T_prob
+
+    seq = ""
+
+    for i in range(0, length):
+        rand_Num = random.random()
+        if rand_Num < a_Lim:
+            seq += "A"
+        elif rand_Num < c_Lim:
+            seq += "C"
+        elif rand_Num < g_Lim:
+            seq += "G"
+        elif rand_Num < t_Lim:
+            seq += "T"
+    
+    return seq
 
 
 ##################################################################
@@ -80,9 +98,34 @@ def generateRandomSequence(length, A_prob, C_prob, G_prob, T_prob):
 # complete this function
 ##################################################################
 def generateComparableRandomSequence(s):
-    # calculate nucleotide frequencies and call generateRandomSequence function
-    # to create the random DNA sequence similar in nucleotide composition and same length
-    return ""	# delete this stub
+
+    # Set up counter variables
+    seq_length = len(s)
+    count_A = 0
+    count_T = 0
+    count_C = 0
+    count_G = 0
+
+    # Loop over characters in the given sequence
+    # Increment character count if the current character matches    
+    for i in range(0,seq_length):
+        temp = s[i]
+        if temp == "A":
+            count_A += 1
+        elif temp == "T":
+            count_T += 1
+        elif temp == "C":
+            count_C += 1
+        elif temp == "G":
+            count_G += 1
+
+    # Calculate percentage compositions for each nucleotide
+    percent_A = count_A / seq_length
+    percent_T = count_T / seq_length
+    percent_C = count_C / seq_length
+    percent_G = count_G / seq_length
+
+    return generateRandomSequence(seq_length, percent_A, percent_C, percent_G, percent_T)
 
 
 ####################################################################
@@ -101,7 +144,39 @@ def generateComparableRandomSequence(s):
 # complete this function
 ###################################################################
 def calculateDistanceScore(s1, s2):
-    return 0	# delete this stub
+
+    # Calculate the global alignment score for the two sequences
+    S_global = globalAlignmentScore(s1, s2)
+
+    #print("S_global: " + str(S_global) )
+    #print("s1: " + str(globalAlignmentScore(s1,s1) ) )
+    #print("s2: " + str(globalAlignmentScore(s2,s2) ) )
+
+    S_iden = (globalAlignmentScore(s1,s1) + globalAlignmentScore(s2,s2)) / 2
+
+    #print("S_iden: " + str(S_iden) )
+    
+    s_1000 = 0
+    for i in range(0,1000):
+        rand_s1 = generateComparableRandomSequence(s1)
+        rand_s2 = generateComparableRandomSequence(s2)
+        s_1000 += globalAlignmentScore(rand_s1, rand_s2)
+
+    #print("s_1000: " + str(s_1000) )
+
+    S_rand = s_1000 / 1000
+
+    #print("s_rand: " + str(S_rand) )
+
+    S_norm = (S_global - S_rand) / (S_iden - S_rand)
+
+    #print("S_norm: " + str(S_norm) )
+
+    D = 100 * (-math.log(S_norm))
+
+    #print("D: " + str(D))
+    
+    return D
 
 ####################################################################
 # Create a 2D table with the given number of rows and columns
@@ -126,10 +201,12 @@ def createTable(numRows, numCols, value):
 ### End of functions ###################################
 ########################################################
 
-seq1 = "GCGTGCATGCATGCCGGG"
-seq2 = "ATTAGACGGATATTCGAT"
-score = globalAlignmentScore(seq1, seq2)
-print(score)
+seq1 = "CGGAGACTGACATGCGATGCG"
+seq2 = "ATTAGACGGATATTCGA"
+#score = globalAlignmentScore(seq1, seq2)
+calculateDistanceScore(seq1, seq2)
+
+#seq = generateRandomSequence(100, 0.17, 0.05, 0.28, 0.50)
 
 ### DNA sequences
 ##seq1 = "CGATAGTGCTATATCTAGCGCCGTCTAGATGCATTATACGATATCG"
