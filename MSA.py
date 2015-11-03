@@ -148,33 +148,23 @@ def calculateDistanceScore(s1, s2):
     # Calculate the global alignment score for the two sequences
     S_global = globalAlignmentScore(s1, s2)
 
-    #print("S_global: " + str(S_global) )
-    #print("s1: " + str(globalAlignmentScore(s1,s1) ) )
-    #print("s2: " + str(globalAlignmentScore(s2,s2) ) )
-
+    # Average the two sequences' global alignment scores with themselves
     S_iden = (globalAlignmentScore(s1,s1) + globalAlignmentScore(s2,s2)) / 2
 
-    #print("S_iden: " + str(S_iden) )
-    
+    # Compute the sum of 1000 global alignments of random sequences with
+    # the same lengths and nucleotide compositions as the two sequences
     s_1000 = 0
     for i in range(0,1000):
         rand_s1 = generateComparableRandomSequence(s1)
         rand_s2 = generateComparableRandomSequence(s2)
         s_1000 += globalAlignmentScore(rand_s1, rand_s2)
 
-    #print("s_1000: " + str(s_1000) )
-
+    # Compute the average global alignment of the 1000 random sequences
     S_rand = s_1000 / 1000
-
-    #print("s_rand: " + str(S_rand) )
 
     S_norm = (S_global - S_rand) / (S_iden - S_rand)
 
-    #print("S_norm: " + str(S_norm) )
-
     D = 100 * (-math.log(S_norm))
-
-    #print("D: " + str(D))
     
     return D
 
@@ -201,29 +191,47 @@ def createTable(numRows, numCols, value):
 ### End of functions ###################################
 ########################################################
 
-seq1 = "CGGAGACTGACATGCGATGCG"
-seq2 = "ATTAGACGGATATTCGA"
+#seq1 = "CGGAGACTGACATGCGATGCG"
+#seq2 = "ATTAGACGGATATTCGA"
 #score = globalAlignmentScore(seq1, seq2)
-calculateDistanceScore(seq1, seq2)
+#calculateDistanceScore(seq1, seq2)
 
 #seq = generateRandomSequence(100, 0.17, 0.05, 0.28, 0.50)
 
-### DNA sequences
-##seq1 = "CGATAGTGCTATATCTAGCGCCGTCTAGATGCATTATACGATATCG"
-##seq2 = "AACGACATGGCTCGTGCTATTACGCGCGAATATCC"
-##seq3 = "ATAGTGCTATACTCGTGCTATTCTAGATGCCGCGATATAT"
-##seq4 = "GGATAGGCTATATCTAGCGCGTCTAGATGCATTTACGATATC"
-##seq5 = "TACGACATGCGCTCGTGCATATTAGCGCGCGATATATCG"
-##
-### calculate global alignment scores for all ten pairs
-##print("Global alignment scores")
-##print("seq1 and seq2: " + str(globalAlignmentScore(seq1, seq2)))
-### finish for other nine pairs
-##
-### calculate distance score for all ten pairs
-##print("")
-##print("Distance scores")
-##print("seq1 and seq2: " + str(calculateDistanceScore(seq1, seq2)))
-### finish for other nine pairs
+# DNA sequences
+seq1 = "CGATAGTGCTATATCTAGCGCCGTCTAGATGCATTATACGATATCG"
+seq2 = "AACGACATGGCTCGTGCTATTACGCGCGAATATCC"
+seq3 = "ATAGTGCTATACTCGTGCTATTCTAGATGCCGCGATATAT"
+seq4 = "GGATAGGCTATATCTAGCGCGTCTAGATGCATTTACGATATC"
+seq5 = "TACGACATGCGCTCGTGCATATTAGCGCGCGATATATCG"
+
+# calculate global alignment scores for all ten pairs
+print("Global alignment scores")
+print("seq1 and seq2: " + str(globalAlignmentScore(seq1, seq2)))
+print("seq1 and seq3: " + str(globalAlignmentScore(seq1, seq3)))
+print("seq1 and seq4: " + str(globalAlignmentScore(seq1, seq4)))
+print("seq1 and seq5: " + str(globalAlignmentScore(seq1, seq5)))
+print("seq2 and seq3: " + str(globalAlignmentScore(seq2, seq3)))
+print("seq2 and seq4: " + str(globalAlignmentScore(seq2, seq4)))
+print("seq2 and seq5: " + str(globalAlignmentScore(seq2, seq5)))
+print("seq3 and seq4: " + str(globalAlignmentScore(seq3, seq4)))
+print("seq3 and seq5: " + str(globalAlignmentScore(seq3, seq5)))
+print("seq4 and seq5: " + str(globalAlignmentScore(seq4, seq5)))
+# finish for other nine pairs
+
+# calculate distance score for all ten pairs
+print("")
+print("Distance scores")
+print("seq1 and seq2: " + str(calculateDistanceScore(seq1, seq2)))
+print("seq1 and seq3: " + str(calculateDistanceScore(seq1, seq3)))
+print("seq1 and seq4: " + str(calculateDistanceScore(seq1, seq4)))
+print("seq1 and seq5: " + str(calculateDistanceScore(seq1, seq5)))
+print("seq2 and seq3: " + str(calculateDistanceScore(seq2, seq3)))
+print("seq2 and seq4: " + str(calculateDistanceScore(seq2, seq4)))
+print("seq2 and seq5: " + str(calculateDistanceScore(seq2, seq5)))
+print("seq3 and seq4: " + str(calculateDistanceScore(seq3, seq4)))
+print("seq3 and seq5: " + str(calculateDistanceScore(seq3, seq5)))
+print("seq4 and seq5: " + str(calculateDistanceScore(seq4, seq5)))
+# finish for other nine pairs
 
 
